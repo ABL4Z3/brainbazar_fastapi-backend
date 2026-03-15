@@ -1,0 +1,250 @@
+[
+  {
+    "id": "demo1",
+    "title": "E-commerce Website",
+    "level": "Intermediate",
+    "summary": "A full-stack e-commerce platform with user authentication, product catalog, and payment integration.",
+    "technology": ["React", "Node.js", "MongoDB", "Stripe"],
+    "tags": ["Web Development", "Full-Stack", "E-commerce"],
+    "price": "499",
+    "isOnSale": false,
+    "image": "/demo1.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Set up the project structure, initialize Git repository, and configure development environment with React, Node.js, and MongoDB."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Create the basic UI layout, implement routing, and set up the database schema for products and users."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "Adding Core Functionality: Implement user authentication, product catalog display, and basic CRUD operations for products."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Backend Integration: Develop RESTful APIs for user management, product management, and integrate with the frontend."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Payment Integration and Deployment: Integrate Stripe for payments, add order management, and deploy the application to a hosting platform."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/README.md"
+  },
+  {
+    "id": "demo2",
+    "title": "Task Management App",
+    "level": "Beginner",
+    "summary": "A simple task management application to create, edit, and track tasks with due dates.",
+    "technology": ["React", "Firebase"],
+    "tags": ["Web Development", "Productivity", "Firebase"],
+    "price": "299",
+    "isOnSale": true,
+    "originalPrice": "399",
+    "image": "/demo2.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Initialize React project, set up Firebase project, and configure authentication."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Design the UI components for task list, task form, and navigation."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "Adding Core Functionality: Implement task creation, editing, deletion, and marking tasks as complete."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Backend Integration: Integrate with Firebase Firestore for data persistence and real-time updates."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Additional Features and Deployment: Add due date tracking, notifications, and deploy to Firebase Hosting."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/task-app/README.md"
+  },
+  {
+    "id": "demo3",
+    "title": "Weather Dashboard",
+    "level": "Beginner",
+    "summary": "A weather dashboard that displays current weather and forecasts using a weather API.",
+    "technology": ["JavaScript", "HTML", "CSS", "API"],
+    "tags": ["Web Development", "API Integration", "JavaScript"],
+    "price": "199",
+    "isOnSale": false,
+    "image": "/demo3.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Set up the HTML structure, CSS styling, and JavaScript file. Obtain API key for weather service."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Create the dashboard layout with sections for current weather and forecast."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "API Integration: Implement API calls to fetch current weather and forecast data."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Data Display and UI Enhancement: Display weather data in a user-friendly format and add responsive design."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Additional Features: Add location search, weather icons, and deploy to a static hosting service."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/weather-dashboard/README.md"
+  },
+  {
+    "id": "demo4",
+    "title": "Blog Platform",
+    "level": "Advanced",
+    "summary": "A full-featured blog platform with user authentication, post creation, and commenting system.",
+    "technology": ["Next.js", "Prisma", "PostgreSQL", "Auth0"],
+    "tags": ["Web Development", "Full-Stack", "Blog"],
+    "price": "799",
+    "isOnSale": true,
+    "originalPrice": "999",
+    "image": "/demo4.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Initialize Next.js project, set up database with Prisma and PostgreSQL, configure Auth0 for authentication."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Design the blog layout, implement routing, and create database models for users and posts."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "User Authentication: Implement user registration, login, and session management with Auth0."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Post Management: Add functionality for creating, editing, and deleting blog posts with rich text editor."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Commenting System and Deployment: Implement commenting on posts, add search and categories, and deploy to Vercel."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/blog-platform/README.md"
+  },
+  {
+    "id": "demo5",
+    "title": "Portfolio Website",
+    "level": "Beginner",
+    "summary": "A personal portfolio website to showcase projects, skills, and contact information.",
+    "technology": ["React", "Tailwind CSS"],
+    "tags": ["Web Development", "Portfolio", "React"],
+    "price": "149",
+    "isOnSale": false,
+    "image": "/demo5.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Set up React project with Vite, install Tailwind CSS, and plan the website structure."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Create the main layout with header, navigation, and footer components."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "Content Sections: Implement sections for about, projects, skills, and contact information."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Styling and Responsiveness: Apply Tailwind CSS styling and ensure mobile responsiveness."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Additional Features and Deployment: Add animations, contact form, and deploy to Netlify."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/portfolio/README.md"
+  },
+  {
+    "id": "demo6",
+    "title": "Chat Application",
+    "level": "Intermediate",
+    "summary": "A real-time chat application with multiple rooms and user presence indicators.",
+    "technology": ["React", "Socket.io", "Node.js", "Express"],
+    "tags": ["Web Development", "Real-time", "Chat"],
+    "price": "599",
+    "isOnSale": true,
+    "originalPrice": "799",
+    "image": "/demo6.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Set up React frontend and Node.js backend with Socket.io for real-time communication."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Create chat interface with message list, input field, and room selection."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "Real-time Messaging: Implement sending and receiving messages in real-time using Socket.io."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Room Management: Add functionality to create and join chat rooms with user presence indicators."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Additional Features and Deployment: Add message history, user authentication, and deploy the full-stack application."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/chat-app/README.md"
+  },
+  {
+    "id": "demo7",
+    "title": "Data Visualization Dashboard",
+    "level": "Advanced",
+    "summary": "An interactive dashboard for visualizing complex datasets with charts and graphs.",
+    "technology": ["React", "D3.js", "Python", "Flask"],
+    "tags": ["Data Visualization", "Dashboard", "D3.js"],
+    "price": "899",
+    "isOnSale": false,
+    "image": "/demo7.png",
+    "youtube": "https://www.youtube.com/@brainbazaar.ujtech",
+    "milestones": [
+      {
+        "name": "Milestone 1",
+        "description": "Project Initialisation and Setup: Set up React frontend, Flask backend, and integrate D3.js for visualizations."
+      },
+      {
+        "name": "Milestone 2",
+        "description": "Project Basic Structure and Layout: Design the dashboard layout with chart containers and data filters."
+      },
+      {
+        "name": "Milestone 3",
+        "description": "Data Processing: Implement backend API for data processing and aggregation."
+      },
+      {
+        "name": "Milestone 4",
+        "description": "Chart Implementation: Create various chart types (bar, line, pie) using D3.js and integrate with React."
+      },
+      {
+        "name": "Milestone 5",
+        "description": "Interactivity and Deployment: Add interactive features like filtering and drill-down, then deploy the application."
+      }
+    ],
+    "contextReadmeLink": "https://github.com/user/repo/blob/main/data-dashboard/README.md"
+  }
+]
