@@ -62,6 +62,28 @@ class AIResponse(BaseModel):
     content: str
 
 
+class QuizQuestion(BaseModel):
+    question: str
+    options: List[str]
+    correct_answer: str
+    explanation: Optional[str] = None
+
+
+class ProjectQuizResponse(BaseModel):
+    project_id: str
+    title: str
+    total_questions: int
+    quiz: List[QuizQuestion]
+
+
+class MilestoneQuizResponse(BaseModel):
+    project_id: str
+    milestone_number: int
+    milestone_name: str
+    total_questions: int
+    quiz: List[QuizQuestion]
+
+
 class MilestoneAIResponse(BaseModel):
     project_id: str
     milestone_number: int

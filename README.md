@@ -159,6 +159,30 @@ Returns full project details including all milestones.
 
 ---
 
+#### `GET /projects/{project_id}/quiz?num_questions=5`
+**[AI Call]** Returns a multiple-choice quiz for the full project.
+
+**Example:** `GET /projects/demo1/quiz?num_questions=5`
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "title": "E-commerce Website",
+  "total_questions": 5,
+  "quiz": [
+    {
+      "question": "Which package is used for MongoDB object modeling in Node.js?",
+      "options": ["mongoose", "sequelize", "typeorm", "prisma"],
+      "correct_answer": "mongoose",
+      "explanation": "Mongoose is the ODM used for MongoDB in this stack."
+    }
+  ]
+}
+```
+
+---
+
 ### Milestones
 
 #### `GET /projects/{project_id}/milestones/{milestone_number}/guide`
@@ -242,6 +266,144 @@ Returns full project details including all milestones.
 
 ---
 
+#### `GET /projects/{project_id}/milestones/{milestone_number}/quiz?num_questions=5`
+**[AI Call]** Returns a multiple-choice quiz focused only on the selected milestone.
+
+**Example:** `GET /projects/demo1/milestones/1/quiz?num_questions=5`
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "milestone_number": 1,
+  "milestone_name": "Milestone 1",
+  "total_questions": 5,
+  "quiz": [
+    {
+      "question": "What is the purpose of a .env file in this milestone setup?",
+      "options": [
+        "Store environment variables",
+        "Compile React code",
+        "Run MongoDB service",
+        "Create git branches"
+      ],
+      "correct_answer": "Store environment variables",
+      "explanation": "The .env file stores runtime configuration like ports and DB URI."
+    }
+  ]
+}
+```
+
+---
+
+### Steps (Inside a Milestone)
+
+#### `GET /projects/{project_id}/milestones/{milestone_number}/steps`
+Returns all steps for a milestone (step list view for UI).
+
+**Example:** `GET /projects/demo1/milestones/1/steps`
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "milestone_number": 1,
+  "milestone_name": "Milestone 1",
+  "total_steps": 5,
+  "steps": [
+    {
+      "stepNumber": 1,
+      "title": "Create Project Folder Structure",
+      "description": "Create the main project directory and subdirectories"
+    }
+  ]
+}
+```
+
+---
+
+#### `GET /projects/{project_id}/milestones/{milestone_number}/steps/{step_number}`
+Returns full details of a specific step including code blocks.
+
+**Example:** `GET /projects/demo1/milestones/1/steps/1`
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "milestone_number": 1,
+  "step_number": 1,
+  "step_title": "Create Project Folder Structure",
+  "step_description": "Create the main project directory and subdirectories",
+  "codeBlocks": [],
+  "verificationSteps": "Use ls or file explorer to confirm folders",
+  "hints": "Use mkdir command or file explorer"
+}
+```
+
+---
+
+#### `GET /projects/{project_id}/milestones/{milestone_number}/steps/{step_number}/guide`
+**[AI Call]** Returns AI explanation for one step (context + code understanding + verification guidance).
+
+**Example:** `GET /projects/demo1/milestones/1/steps/1/guide`
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "milestone_number": 1,
+  "step_number": 1,
+  "step_title": "Create Project Folder Structure",
+  "content": "## What this step does\n..."
+}
+```
+
+---
+
+#### `POST /projects/{project_id}/milestones/{milestone_number}/steps/{step_number}/ask`
+**[AI Call]** Ask AI about a specific step.
+
+**Example:** `POST /projects/demo1/milestones/1/steps/1/ask`
+
+**Request body:**
+```json
+{
+  "question": "How should I create this folder structure on Windows?"
+}
+```
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "milestone_number": 1,
+  "step_number": 1,
+  "question": "How should I create this folder structure on Windows?",
+  "answer": "You can use mkdir..."
+}
+```
+
+---
+
+#### `POST /projects/{project_id}/milestones/{milestone_number}/steps/{step_number}/complete`
+**[AI Call]** Mark a step complete and return encouragement + next-step preview.
+
+**Example:** `POST /projects/demo1/milestones/1/steps/1/complete`
+
+**Response example:**
+```json
+{
+  "project_id": "demo1",
+  "milestone_number": 1,
+  "step_number": 1,
+  "message": "Great progress!",
+  "next_step_preview": "Next: Step 2 — Initialize Node.js Backend"
+}
+```
+
+---
+
 ## Frontend Integration Guide
 
 ### Typical User Flow
@@ -250,11 +412,13 @@ Returns full project details including all milestones.
 1. Load project list          → GET /projects
 2. User picks a project       → GET /projects/{id}
 3. Show AI overview           → GET /projects/{id}/overview
-4. User starts Milestone 1    → GET /projects/{id}/milestones/1/guide
-5. User is stuck              → GET /projects/{id}/milestones/1/hint
-                              → POST /projects/{id}/milestones/1/ask  { question }
-6. User finishes milestone    → POST /projects/{id}/milestones/1/complete
-7. Move to next milestone     → GET /projects/{id}/milestones/2/guide
+4. Load steps of Milestone 1  → GET /projects/{id}/milestones/1/steps
+5. User opens Step 1 details  → GET /projects/{id}/milestones/1/steps/1
+6. Show AI step guide         → GET /projects/{id}/milestones/1/steps/1/guide
+7. User asks about Step 1     → POST /projects/{id}/milestones/1/steps/1/ask { question }
+8. User completes Step 1      → POST /projects/{id}/milestones/1/steps/1/complete
+9. (Optional milestone chat)  → POST /projects/{id}/milestones/1/ask { question }
+10. Move to next step/milestone and repeat
 ... repeat until milestone 5
 ```
 
@@ -262,6 +426,8 @@ Returns full project details including all milestones.
 All `content`, `answer`, `hint`, and `message` fields return **Markdown**. Use a markdown renderer on the frontend:
 - React: [`react-markdown`](https://github.com/remarkjs/react-markdown)
 - Vue: [`vue-markdown-it`](https://github.com/JanGuillermo/vue3-markdown-it)
+
+For step details, `codeBlocks` is already structured JSON (`fileName`, `language`, `code`) so render those with a code viewer (e.g., Prism/Highlight.js) directly.
 
 ### Example fetch (JavaScript)
 ```js

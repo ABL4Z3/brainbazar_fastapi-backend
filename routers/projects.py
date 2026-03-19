@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from services import data_service, gemini_service
-from models.schemas import ProjectSummary, AIResponse
+from models.schemas import ProjectSummary, AIResponse, ProjectQuizResponse
 
 router = APIRouter()
 
@@ -46,3 +46,24 @@ def get_project_overview(project_id: str):
 
     content = gemini_service.get_project_overview(project)
     return {"project_id": project_id, "title": project["title"], "content": content}
+
+
+@router.get("/{project_id}/quiz", response_model=ProjectQuizResponse)
+def get_project_quiz(project_id: str, num_questions: int = 5):
+    """
+    AI-generated quiz for the full project.
+    """
+    if num_questions < 1 or num_questions > 20:
+        raise HTTPException(status_code=400, detail="num_questions must be between 1 and 20")
+
+    project = data_service.get_project_by_id(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail=f"Project '{project_id}' not found")
+
+    quiz = gemini_service.generate_project_quiz(project, num_questions)
+    return {
+        "project_id": project_id,
+        "title": project["title"],
+        "total_questions": len(quiz),
+        "quiz": quiz,
+    }

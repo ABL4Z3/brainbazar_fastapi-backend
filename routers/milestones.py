@@ -4,6 +4,7 @@ from models.schemas import (
     AskRequest,
     MilestoneAIResponse,
     MilestoneAskResponse,
+    MilestoneQuizResponse,
     StepAskResponse,
     CompletionResponse,
     StepResponse,
@@ -112,6 +113,26 @@ def complete_milestone(project_id: str, milestone_number: int):
         "project_id": project_id,
         "milestone_number": milestone_number,
         "message": message,
+    }
+
+
+@router.get("/{project_id}/milestones/{milestone_number}/quiz", response_model=MilestoneQuizResponse)
+def get_milestone_quiz(project_id: str, milestone_number: int, num_questions: int = 5):
+    """
+    AI-generated quiz focused on one milestone.
+    """
+    if num_questions < 1 or num_questions > 20:
+        raise HTTPException(status_code=400, detail="num_questions must be between 1 and 20")
+
+    project, milestone = _get_project_and_milestone(project_id, milestone_number)
+    quiz = gemini_service.generate_milestone_quiz(project, milestone_number, milestone, num_questions)
+
+    return {
+        "project_id": project_id,
+        "milestone_number": milestone_number,
+        "milestone_name": milestone["name"],
+        "total_questions": len(quiz),
+        "quiz": quiz,
     }
 
 

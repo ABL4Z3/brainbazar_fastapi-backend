@@ -46,6 +46,74 @@ def _call_gemini(prompt: str) -> str:
         raise ValueError(f"Unexpected Gemini API response: {response.text}") from e
 
 
+def _call_gemini_json(prompt: str):
+    if not _API_KEY:
+        raise ValueError("GEMINI_API_KEY environment variable not set.")
+
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "responseMimeType": "application/json",
+        },
+    }
+    headers = {"Content-Type": "application/json"}
+
+    try:
+        response = requests.post(_API_URL, json=payload, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        text = data["candidates"][0]["content"]["parts"][0]["text"]
+        return json.loads(text)
+    except requests.exceptions.RequestException as e:
+        error_msg = response.json().get("error", {}).get("message", str(e))
+        raise ConnectionError(f"Gemini API request failed: {error_msg}") from e
+    except (KeyError, IndexError, json.JSONDecodeError) as e:
+        raise ValueError(f"Unexpected Gemini JSON response: {response.text}") from e
+
+
+def _normalize_quiz_questions(raw_quiz) -> list[dict]:
+    if isinstance(raw_quiz, dict):
+        if isinstance(raw_quiz.get("quiz"), list):
+            raw_quiz = raw_quiz["quiz"]
+        elif isinstance(raw_quiz.get("questions"), list):
+            raw_quiz = raw_quiz["questions"]
+        else:
+            raw_quiz = []
+
+    if not isinstance(raw_quiz, list):
+        return []
+
+    normalized = []
+    for item in raw_quiz:
+        if not isinstance(item, dict):
+            continue
+        question = item.get("question")
+        options = item.get("options")
+        correct_answer = item.get("correct_answer")
+        explanation = item.get("explanation")
+
+        if not question or not isinstance(options, list) or not correct_answer:
+            continue
+
+        filtered_options = [opt for opt in options if isinstance(opt, str) and opt.strip()]
+        if len(filtered_options) < 2:
+            continue
+
+        if correct_answer not in filtered_options:
+            continue
+
+        normalized.append(
+            {
+                "question": question,
+                "options": filtered_options,
+                "correct_answer": correct_answer,
+                "explanation": explanation if isinstance(explanation, str) else None,
+            }
+        )
+
+    return normalized
+
+
 # ──────────────────────────────────────────────
 # 1. Project Overview
 # ──────────────────────────────────────────────
@@ -284,3 +352,77 @@ Keep it brief, warm, and motivating. Use markdown.
 """.strip()
 
     return _call_gemini(prompt)
+
+
+def generate_project_quiz(project: dict, num_questions: int = 5) -> list[dict]:
+    milestones_text = "\n".join(
+        f"Milestone {i + 1}: {m['name']} - {m['description']}"
+        for i, m in enumerate(project.get("milestones", []))
+    )
+
+    prompt = f"""
+You are creating a quiz for learners building this project.
+
+Project: {project['title']}
+Level: {project['level']}
+Summary: {project['summary']}
+Technologies: {', '.join(project['technology'])}
+
+Milestones:
+{milestones_text}
+
+Generate exactly {num_questions} multiple-choice questions to assess understanding of this full project.
+
+Output must be a JSON array. Each item must have:
+- question (string)
+- options (array of exactly 4 strings)
+- correct_answer (string, must match one option exactly)
+- explanation (short string)
+
+No markdown. No extra keys. JSON only.
+""".strip()
+
+    raw_quiz = _call_gemini_json(prompt)
+    normalized = _normalize_quiz_questions(raw_quiz)
+    if not normalized:
+        raise ValueError("Gemini returned an invalid quiz format for project quiz.")
+    return normalized[:num_questions]
+
+
+def generate_milestone_quiz(
+    project: dict, milestone_number: int, milestone: dict, num_questions: int = 5
+) -> list[dict]:
+    steps = milestone.get("steps", [])
+    steps_text = "\n".join(
+        f"Step {s.get('stepNumber')}: {s.get('title')} - {s.get('description')}"
+        for s in steps
+    )
+
+    prompt = f"""
+You are creating a quiz for learners on one milestone.
+
+Project: {project['title']}
+Level: {project['level']}
+Milestone {milestone_number}: {milestone['name']}
+Milestone Goal: {milestone['description']}
+Technologies: {', '.join(project['technology'])}
+
+Steps in this milestone:
+{steps_text if steps_text else 'No explicit steps provided.'}
+
+Generate exactly {num_questions} multiple-choice questions focused ONLY on this milestone.
+
+Output must be a JSON array. Each item must have:
+- question (string)
+- options (array of exactly 4 strings)
+- correct_answer (string, must match one option exactly)
+- explanation (short string)
+
+No markdown. No extra keys. JSON only.
+""".strip()
+
+    raw_quiz = _call_gemini_json(prompt)
+    normalized = _normalize_quiz_questions(raw_quiz)
+    if not normalized:
+        raise ValueError("Gemini returned an invalid quiz format for milestone quiz.")
+    return normalized[:num_questions]
