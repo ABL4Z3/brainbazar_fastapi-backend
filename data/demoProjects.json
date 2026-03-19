@@ -13,7 +13,77 @@
     "milestones": [
       {
         "name": "Milestone 1",
-        "description": "Project Initialisation and Setup: Set up the project structure, initialize Git repository, and configure development environment with React, Node.js, and MongoDB."
+        "description": "Project Initialisation and Setup: Set up the project structure, initialize Git repository, and configure development environment with React, Node.js, and MongoDB.",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "title": "Create Project Folder Structure",
+            "description": "Create the main project directory and subdirectories for frontend and backend code.",
+            "verificationSteps": "Use `ls` or file explorer to confirm you have: project-root/, project-root/client/, project-root/server/, project-root/.git/",
+            "hints": "You can create folders using `mkdir` command or right-click in file explorer. Use `git init` to initialize Git.",
+            "codeBlocks": []
+          },
+          {
+            "stepNumber": 2,
+            "title": "Initialize Node.js Backend",
+            "description": "Set up Node.js and install Express framework in the server directory.",
+            "verificationSteps": "Confirm server/package.json exists and node_modules folder is created.",
+            "hints": "Navigate to server folder and run: npm init -y && npm install express mongoose dotenv cors",
+            "codeBlocks": [
+              {
+                "fileName": "server/package.json",
+                "language": "json",
+                "code": "{\n  \"name\": \"ecommerce-backend\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Backend for E-commerce platform\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"start\": \"node index.js\",\n    \"dev\": \"nodemon index.js\"\n  },\n  \"keywords\": [\"ecommerce\"],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"mongoose\": \"^7.0.0\",\n    \"dotenv\": \"^16.0.3\",\n    \"cors\": \"^2.8.5\"\n  }\n}"
+              }
+            ]
+          },
+          {
+            "stepNumber": 3,
+            "title": "Create Basic Express Server",
+            "description": "Create the main server file with Express and configure basic middleware.",
+            "verificationSteps": "Run `npm run dev` and visit http://localhost:5000/ — you should see 'Server running on port 5000'",
+            "hints": "Create file: server/index.js. Use dotenv to load .env variables.",
+            "codeBlocks": [
+              {
+                "fileName": "server/index.js",
+                "language": "javascript",
+                "code": "require('dotenv').config();\nconst express = require('express');\nconst cors = require('cors');\n\nconst app = express();\nconst PORT = process.env.PORT || 5000;\n\n// Middleware\napp.use(cors());\napp.use(express.json());\n\n// Routes\napp.get('/', (req, res) => {\n  res.json({ message: 'Welcome to E-commerce API' });\n});\n\n// Error handling\napp.use((err, req, res, next) => {\n  console.error(err.stack);\n  res.status(500).json({ error: 'Something went wrong!' });\n});\n\n// Start server\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});"
+              },
+              {
+                "fileName": "server/.env",
+                "language": "bash",
+                "code": "PORT=5000\nMONGODB_URI=mongodb://localhost:27017/ecommerce\nNODE_ENV=development"
+              }
+            ]
+          },
+          {
+            "stepNumber": 4,
+            "title": "Initialize React Frontend",
+            "description": "Create React app in the client directory using Vite.",
+            "verificationSteps": "Confirm client/package.json exists and node_modules is created. Run `npm run dev` in client folder.",
+            "hints": "From project root, run: npm create vite@latest client -- --template react && cd client && npm install",
+            "codeBlocks": []
+          },
+          {
+            "stepNumber": 5,
+            "title": "Set Up MongoDB Connection",
+            "description": "Create MongoDB connection file and configure Mongoose.",
+            "verificationSteps": "Check that server starts without connection errors. You should see 'MongoDB connected' in console.",
+            "hints": "Create server/config/db.js. Make sure MongoDB is running on your machine.",
+            "codeBlocks": [
+              {
+                "fileName": "server/config/db.js",
+                "language": "javascript",
+                "code": "const mongoose = require('mongoose');\n\nconst connectDB = async () => {\n  try {\n    await mongoose.connect(process.env.MONGODB_URI);\n    console.log('MongoDB connected successfully');\n  } catch (error) {\n    console.error('MongoDB connection error:', error.message);\n    process.exit(1);\n  }\n};\n\nmodule.exports = connectDB;"
+              },
+              {
+                "fileName": "server/index.js (UPDATE)",
+                "language": "javascript",
+                "code": "require('dotenv').config();\nconst express = require('express');\nconst cors = require('cors');\nconst connectDB = require('./config/db');\n\nconst app = express();\nconst PORT = process.env.PORT || 5000;\n\n// Connect to MongoDB\nconnectDB();\n\n// Middleware\napp.use(cors());\napp.use(express.json());\n\n// Routes\napp.get('/', (req, res) => {\n  res.json({ message: 'Welcome to E-commerce API' });\n});\n\n// Start server\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "Milestone 2",

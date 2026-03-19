@@ -34,3 +34,32 @@ def get_total_milestones(project_id: str) -> int:
     if not project:
         return 0
     return len(project.get("milestones", []))
+
+
+def get_step(project_id: str, milestone_number: int, step_number: int) -> Optional[dict]:
+    """Get a specific step from a milestone."""
+    milestone = get_milestone(project_id, milestone_number)
+    if not milestone:
+        return None
+    steps = milestone.get("steps", [])
+    # Steps are 1-indexed in the JSON
+    for step in steps:
+        if step.get("stepNumber") == step_number:
+            return step
+    return None
+
+
+def get_total_steps(project_id: str, milestone_number: int) -> int:
+    """Get total number of steps in a milestone."""
+    milestone = get_milestone(project_id, milestone_number)
+    if not milestone:
+        return 0
+    return len(milestone.get("steps", []))
+
+
+def list_steps(project_id: str, milestone_number: int) -> Optional[list[dict]]:
+    """Get all steps in a milestone."""
+    milestone = get_milestone(project_id, milestone_number)
+    if not milestone:
+        return None
+    return milestone.get("steps", [])
